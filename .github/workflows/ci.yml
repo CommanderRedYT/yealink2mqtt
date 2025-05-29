@@ -3,6 +3,7 @@ on:
 
 jobs:
   lint:
+    name: Lint Code
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -37,6 +38,7 @@ jobs:
           wait-for-processing: true
 
   typecheck:
+    name: Type Check Code
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -59,6 +61,7 @@ jobs:
           yarn typecheck
 
   build-linux-container:
+    name: Build Linux Container
     runs-on: ubuntu-latest
     permissions:
       packages: write
