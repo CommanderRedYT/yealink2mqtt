@@ -3,12 +3,9 @@ import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import mqtt from 'mqtt';
 import configureRouter, { ConfigName } from './configure';
-import { port, hostname } from './util';
+import { port, hostname, mqttUrl, mqttPrefix } from './util';
 
 const app = express();
-
-const mqttUrl = process.env.MQTT_URL || 'mqtt://localhost:1883';
-const mqttPrefix = process.env.MQTT_PREFIX || 'yealink';
 
 const mqttClient = mqtt.connect(mqttUrl, {
   clientId: 'yealink2mqtt',

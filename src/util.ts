@@ -3,11 +3,16 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-export const port = parseInt(process.env.PORT || '3000', 10);
-
-export const hostname = process.env.HOSTNAME || 'localhost';
+export const port = parseInt(process.env.SERVER_PORT || '3000', 10);
+export const hostname = process.env.SERVER_HOSTNAME || 'localhost';
+export const mqttUrl = process.env.SERVER_MQTT_URL || 'mqtt://localhost:1883';
+export const mqttPrefix = process.env.SERVER_MQTT_PREFIX || 'yealink';
 
 export const getServerIpAddress = (): string => {
+  if (process.env.SERVER_REMOTE_IP_ADDRESS) {
+    return process.env.SERVER_REMOTE_IP_ADDRESS;
+  }
+
   const interfaces = os.networkInterfaces();
   // eslint-disable-next-line guard-for-in,no-restricted-syntax
   for (const interfaceName in interfaces) {
