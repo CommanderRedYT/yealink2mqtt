@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Yealink2Mqtt Configurator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Yealink2Mqtt Configurator</h1>
+    <hr />
+    <div id="configfile-converter">
+        <h2>Config File Converter</h2>
+        <p>Register the correct URLs for the Yealink2Mqtt service.</p>
+        <form id="config-form">
+            <label for="yealink-config-file">Yealink Config File:</label>
+            <input type="file" id="yealink-config-file" accept=".cfg" required>
+            <br />
+            <button type="submit">Convert</button>
+        </form>
+    </div>
+</body>
+<script>
+    document.getElementById('config-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const fileInput = document.getElementById('yealink-config-file');
+        if (fileInput.files.length === 0) {
+            alert('Please select a config file.');
+            return;
+        }
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const content = e.target.result;
+            // POST to /api/convert
+            fetch('/api/convert', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain'
+                },
+                body: content
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            }).then(data => {
+                const blob = new Blob([data.convertedConfig], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'converted_config.cfg';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }).catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred during conversion.');
+            });
+        };
+        reader.readAsText(file);
+    });
+    </script>
+</script>
+</html>
