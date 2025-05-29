@@ -5,9 +5,29 @@ device in Home Assistant.
 
 ## Installation
 
+#### Non-Docker
+
 1. CLone the repository
 2. Install the requirements with `yarn install`
 3. Override the MQTT server with a `.env` file in the working directory.
+
+#### Docker
+
+```yaml
+services:
+  yealink2mqtt:
+    image: ghcr.io/CommanderRedYT/yealink2mqtt:latest
+    container_name: yealink2mqtt
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - SERVER_PORT=8080
+      - SERVER_HOSTNAME=0.0.0.0
+      - SERVER_MQTT_URL=mqtt://test.mosquitto.org:1883
+      - SERVER_MQTT_PREFIX=yealink
+      - SERVER_REMOTE_IP_ADDRESS=192.168.0.1
+```
 
 ## Configuration
 
