@@ -26,7 +26,7 @@ const callQueryString =
 
 const deviceInfoQueryString = '?mac=$mac&model=$model&ip=$ip' as const;
 
-type ConfigName =
+export type ConfigName =
   | 'always_fwd_off'
   | 'always_fwd_on'
   | 'answer_new_incoming_call'
